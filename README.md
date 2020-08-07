@@ -32,3 +32,5 @@ profilename:           # 1st level is profilename
     DATABASE:  
         URL: <url>     # 3rd level not allowed
 ```
+
+# 2. Log Helpers
