@@ -1,6 +1,7 @@
 package core
 
 import (
+	"crypto/tls"
 	"database/sql"
 	"fmt"
 
@@ -28,6 +29,9 @@ func ConnectDb(c *DbConf) *pg.DB {
 		Database: c.Name,
 		User:     c.User,
 		Password: c.Password,
+		TLSConfig: &tls.Config{
+			InsecureSkipVerify: true,
+		},
 	}
 
 	if c.HasMigrations {
