@@ -21,6 +21,7 @@ type DbConf struct {
 	Password      string
 	HasMigrations bool
 	MigrationPath string
+	Insecure      bool
 }
 
 func ConnectDb(c *DbConf) *pg.DB {
@@ -29,9 +30,12 @@ func ConnectDb(c *DbConf) *pg.DB {
 		Database: c.Name,
 		User:     c.User,
 		Password: c.Password,
-		TLSConfig: &tls.Config{
+	}
+
+	if c.Insecure {
+		opts.TLSConfig = &tls.Config{
 			InsecureSkipVerify: true,
-		},
+		}
 	}
 
 	if c.HasMigrations {
