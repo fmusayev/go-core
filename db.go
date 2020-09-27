@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"database/sql"
 	"fmt"
+	"time"
 
 	"github.com/go-pg/pg"
 	_ "github.com/lib/pq" // pq
@@ -22,14 +23,18 @@ type DbConf struct {
 	HasMigrations bool
 	MigrationPath string
 	Insecure      bool
+	MaxRetries    int
+	MaxConnAge    time.Duration
 }
 
 func ConnectDb(c *DbConf) *pg.DB {
 	opts := &pg.Options{
-		Addr:     fmt.Sprintf("%v:%v", c.Host, c.Port),
-		Database: c.Name,
-		User:     c.User,
-		Password: c.Password,
+		Addr:       fmt.Sprintf("%v:%v", c.Host, c.Port),
+		Database:   c.Name,
+		User:       c.User,
+		Password:   c.Password,
+		MaxRetries: c.MaxRetries,
+		MaxConnAge: c.MaxConnAge,
 	}
 
 	if c.Insecure {
